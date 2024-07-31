@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AmountInputField extends StatefulWidget {
-  AmountInputField({Key? key}) : super(key: key);
+  AmountInputField({
+    Key? key,
+    required this.onChange,
+    required this.label,
+  }) : super(key: key);
+
+  final Function(String) onChange;
+  final String label;
 
   @override
   _AmountInputFieldState createState() => _AmountInputFieldState();
@@ -11,7 +18,7 @@ class AmountInputField extends StatefulWidget {
 class _AmountInputFieldState extends State<AmountInputField> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  String _hintText = '00.00';
+  String _hintText = '1.00';
 
   @override
   void initState() {
@@ -32,7 +39,7 @@ class _AmountInputFieldState extends State<AmountInputField> {
   void _handleFocusChange() {
     if (!_focusNode.hasFocus && _controller.text.isEmpty) {
       setState(() {
-        _hintText = '00.00';
+        _hintText = '1.00';
       });
     } else {
       _formatInput();
@@ -69,18 +76,21 @@ class _AmountInputFieldState extends State<AmountInputField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
-      width: 200,
+      width: 160,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(2.0),
             child: Text(
-              "Amount",
+              widget.label,
               style: theme.textTheme.titleSmall,
             ),
           ),
           TextField(
+            onChanged: (text) {
+              widget.onChange(text);
+            },
             controller: _controller,
             focusNode: _focusNode,
             decoration: InputDecoration(

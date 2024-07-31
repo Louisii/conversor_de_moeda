@@ -56,97 +56,131 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: BlocBuilder<CurrencyBloc, CurrencyState>(
-                      builder: (context, state) {
-                    if (state is CurrencyInitialState) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is CurrencySuccessState) {
-                      final currenciesList = state.currencies;
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: BlocBuilder<CurrencyBloc, CurrencyState>(
+                        builder: (context, state) {
+                      if (state is CurrencyInitialState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is CurrencySuccessState) {
+                        final currenciesList = state.currencies;
 
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Spacer(),
-                              FrostedGlassCard(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        BlocBuilder<ConversionBloc,
-                                                ConversionState>(
-                                            builder: (context, state) {
-                                          return CurrencyDropdown(
-                                            label: "From currency",
-                                            currenciesList: currenciesList,
-                                            onChange: (selectedCurrency) {
-                                              context
-                                                  .read<ConversionBloc>()
-                                                  .add(
-                                                    SetFromCurrencyEvent(
-                                                      fromCurrency:
-                                                          selectedCurrency,
-                                                    ),
-                                                  );
-                                            },
-                                          );
-                                        }),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        AmountInputField(),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        BlocBuilder<ConversionBloc,
-                                                ConversionState>(
-                                            builder: (context, state) {
-                                          return CurrencyDropdown(
-                                            label: "To currency",
-                                            currenciesList: currenciesList,
-                                            onChange: (selectedCurrency) {
-                                              context
-                                                  .read<ConversionBloc>()
-                                                  .add(
-                                                    SetToCurrencyEvent(
-                                                      toCurrency:
-                                                          selectedCurrency,
-                                                    ),
-                                                  );
-                                            },
-                                          );
-                                        }),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        AmountInputField(),
-                                      ],
-                                    ),
-                                  ],
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Spacer(),
+                                FrostedGlassCard(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          BlocBuilder<ConversionBloc,
+                                                  ConversionState>(
+                                              builder: (context, state) {
+                                            return CurrencyDropdown(
+                                              label: "From currency",
+                                              currenciesList: currenciesList,
+                                              onChange: (selectedCurrency) {
+                                                context
+                                                    .read<ConversionBloc>()
+                                                    .add(
+                                                      SetFromCurrencyEvent(
+                                                        fromCurrency:
+                                                            selectedCurrency,
+                                                      ),
+                                                    );
+                                              },
+                                            );
+                                          }),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          BlocBuilder<ConversionBloc,
+                                                  ConversionState>(
+                                              bloc: conversionBloc,
+                                              builder: (context, state) {
+                                                return AmountInputField(
+                                                  label: "Amount",
+                                                  onChange:
+                                                      (fromCurrencyAmount) {
+                                                    context
+                                                        .read<ConversionBloc>()
+                                                        .add(
+                                                          SetFromCurrencyAmountEvent(
+                                                            fromCurrencyAmount:
+                                                                double.parse(
+                                                                    fromCurrencyAmount),
+                                                          ),
+                                                        );
+                                                  },
+                                                );
+                                              }),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          BlocBuilder<ConversionBloc,
+                                                  ConversionState>(
+                                              builder: (context, state) {
+                                            return CurrencyDropdown(
+                                              label: "To currency",
+                                              currenciesList: currenciesList,
+                                              onChange: (selectedCurrency) {
+                                                context
+                                                    .read<ConversionBloc>()
+                                                    .add(
+                                                      SetToCurrencyEvent(
+                                                        toCurrency:
+                                                            selectedCurrency,
+                                                      ),
+                                                    );
+                                              },
+                                            );
+                                          }),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          BlocBuilder<ConversionBloc,
+                                                  ConversionState>(
+                                              builder: (context, state) {
+                                            if (state
+                                                    is ConversionSuccessState &&
+                                                state.conversion?.result !=
+                                                    null) {
+                                              return Text(state
+                                                  .conversion!.result!
+                                                  .toStringAsFixed(2));
+                                            } else {
+                                              return const Text('result');
+                                            }
+                                          }),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }),
+                                const Spacer(),
+                              ],
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
+                  ),
                 ),
               ),
             ],

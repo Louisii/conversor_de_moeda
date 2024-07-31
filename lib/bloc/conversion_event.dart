@@ -12,6 +12,16 @@ class SetToCurrencyEvent extends ConversionEvent {
   SetToCurrencyEvent({required this.toCurrency});
 }
 
+class SetFromCurrencyAmountEvent extends ConversionEvent {
+  final double fromCurrencyAmount;
+  SetFromCurrencyAmountEvent({required this.fromCurrencyAmount});
+}
+
+class SetToCurrencyResultEvent extends ConversionEvent {
+  final double toCurrencyResult;
+  SetToCurrencyResultEvent({required this.toCurrencyResult});
+}
+
 class CalculateConversionResultEvent extends ConversionEvent {
   final Currency fromCurrency;
   final Currency toCurrency;
