@@ -76,6 +76,7 @@ class _AmountInputFieldState extends State<AmountInputField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
+      
       width: 160,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

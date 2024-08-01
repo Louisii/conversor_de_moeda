@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color mainColor = Color(0xFFA3C2DC);
 
-    final theme = Theme.of(context);
     return MaterialApp(
       title: 'Currency Converter',
       theme: ThemeData(
@@ -36,6 +35,7 @@ class MyApp extends StatelessWidget {
           inversePrimary: mainColor.withOpacity(0.6),
         ),
         inputDecorationTheme: InputDecorationTheme(
+          
           floatingLabelBehavior: FloatingLabelBehavior.never,
           filled: true,
           fillColor: Colors.white.withOpacity(0.6),

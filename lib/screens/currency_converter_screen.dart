@@ -40,6 +40,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider(
       create: (context) => CurrencyBloc()..add(FetchCurrenciesEvent()),
       child: BlocProvider(
@@ -152,20 +153,54 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                                           const SizedBox(
                                             width: 16,
                                           ),
-                                          BlocBuilder<ConversionBloc,
-                                                  ConversionState>(
-                                              builder: (context, state) {
-                                            if (state
-                                                    is ConversionSuccessState &&
-                                                state.conversion?.result !=
-                                                    null) {
-                                              return Text(state
-                                                  .conversion!.result!
-                                                  .toStringAsFixed(2));
-                                            } else {
-                                              return const Text('result');
-                                            }
-                                          }),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: Text(
+                                                  "Result",
+                                                  style: theme
+                                                      .textTheme.titleSmall,
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 52,
+                                                width: 160,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                      .withOpacity(0.6),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 0.2),
+                                                ),
+                                                child: Center(
+                                                  child: BlocBuilder<
+                                                          ConversionBloc,
+                                                          ConversionState>(
+                                                      builder:
+                                                          (context, state) {
+                                                    if (state
+                                                            is ConversionSuccessState &&
+                                                        state.conversion
+                                                                ?.result !=
+                                                            null) {
+                                                      return Text(state
+                                                          .conversion!.result!
+                                                          .toStringAsFixed(2));
+                                                    } else {
+                                                      return const Text(
+                                                          'result');
+                                                    }
+                                                  }),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ],

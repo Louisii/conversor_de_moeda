@@ -46,6 +46,7 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
           ),
         ),
         Container(
+          height: 54,
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.white.withOpacity(0.6),
             borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
